@@ -1,0 +1,41 @@
+{
+  "name": "Essa",
+  "fullName": "Essa på Ljan",
+  "type": "Local Restaurant",
+  "location": {
+    "address": "Ljabruveien 87, 1266 Oslo",
+    "area": "Ljabru Verk",
+    "city": "Oslo"
+  },
+  "contact": {
+    "phone": "97369144",
+    "email": "booking@essaljan.no",
+    "instagram": "@essa_ljan",
+    "facebook": "Essa på Ljan",
+    "website": "essa.no"
+  },
+  "googleBusiness": {
+    "rating": 4.4,
+    "reviewCount": 152,
+    "placeId": null
+  },
+  "brand": {
+    "tagline": "Lokal Matglede på Ljan",
+    "description": "Restaurant i den gamle smia til Ljabru gård. Hyggelige verter, god atmosfære. Tilbyr selskaper, catering, søndagsmiddager og events. Pizzabuffet på søndager.",
+    "tone": "Warm, local, welcoming, family-friendly, quality food, historic setting",
+    "keywords": ["lokal matglede", "Ljan", "Ljabru gård", "smia", "søndagsmiddag", "catering", "events", "pizzabuffet"],
+    "emoji": "🍽️❤️🏡"
+  },
+  "content": {
+    "bestSellers": ["Søndagsmiddag", "Pizzabuffet søndag", "Catering"],
+    "uniquePoints": [
+      "Historic location in old smithy",
+      "Ljabru gård setting",
+      "Sunday dinners",
+      "Pizza buffet Sundays",
+      "Events and catering",
+      "Local neighborhood gem"
+    ],
+    "hashtags": ["#essaljan", "#ljabruverk", "#oslorestaurant", "#lokalmathglede", "#søndagsmiddag", "#ljabru", "#nordstrand", "#oslofood", "#catering"]
+  }
+}

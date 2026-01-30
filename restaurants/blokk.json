@@ -1,0 +1,39 @@
+{
+  "name": "Blokk",
+  "fullName": "BLOKK Pizza",
+  "type": "Detroit-style Pizza",
+  "location": {
+    "address": "Knud Askers vei 26, 1383 Asker",
+    "area": "Trekanten, Asker Mathall",
+    "city": "Asker"
+  },
+  "contact": {
+    "phone": "46 96 20 90",
+    "email": null,
+    "instagram": "@blokkoslo",
+    "facebook": null
+  },
+  "googleBusiness": {
+    "rating": 5.0,
+    "reviewCount": 1,
+    "placeId": null
+  },
+  "brand": {
+    "tagline": "Oslo's first authentic Detroit-style pizza experience",
+    "description": "Everything is made in-house - from our 2-day fermented dough to our signature sauces and dips. We bake fresh daily using steel pans to create thick, airy crusts with signature crispy cheese edges.",
+    "tone": "Authentic, passionate about craft, quality-focused, friendly",
+    "keywords": ["Detroit-style", "fermented dough", "steel pan", "crispy cheese edges", "made in-house", "fresh daily"],
+    "emoji": "🍕🔥"
+  },
+  "content": {
+    "bestSellers": ["Detroit-style pizza", "Crispy cheese edge slices"],
+    "uniquePoints": [
+      "2-day fermented dough",
+      "Steel pan baked",
+      "Signature crispy cheese edges",
+      "All made in-house",
+      "Fresh daily"
+    ],
+    "hashtags": ["#blokkpizza", "#detroitpizza", "#askermathall", "#pizzaasker", "#detroitstyle", "#crispy", "#fermenteddough", "#asker", "#mathall"]
+  }
+}

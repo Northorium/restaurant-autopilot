@@ -1,0 +1,41 @@
+{
+  "name": "Vespa & Humla",
+  "fullName": "Vespa og Humla",
+  "type": "Pizza, Brunch & Mikrobryggeri",
+  "location": {
+    "address": "Grünerløkka",
+    "area": "Grünerløkka",
+    "city": "Oslo"
+  },
+  "contact": {
+    "phone": null,
+    "email": "post@vespaoghumla.no",
+    "instagram": null,
+    "facebook": null,
+    "website": "vespaoghumla.no"
+  },
+  "googleBusiness": {
+    "rating": null,
+    "reviewCount": null,
+    "placeId": null
+  },
+  "brand": {
+    "tagline": "Din lokale favoritt på Grünerløkka",
+    "description": "Det naturlige samlingspunktet i hjertet av Grünerløkka, hvor kreative sjeler og matentusiaster møtes. Unik kombinasjon av herlig brunsj servert på fjøl og Detroit-style pannepizza. Mikrobryggeri på huset.",
+    "tone": "Warm, welcoming, local neighborhood vibe, creative, cozy, quality-conscious",
+    "keywords": ["brunsj", "Detroit pizza", "pannepizza", "mikrobryggeri", "Grünerløkka", "lokalt", "kaffe", "Solberg & Hansen"],
+    "emoji": "🍕🍺☕🥐"
+  },
+  "content": {
+    "bestSellers": ["Detroit-style pannepizza", "Brunsj på fjøl", "Husets øl", "Croissanter"],
+    "uniquePoints": [
+      "Detroit-style pannepizza",
+      "Brunsj servert på fjøl",
+      "Eget mikrobryggeri",
+      "Kaffe fra Solberg & Hansen",
+      "Sesongbaserte råvarer",
+      "Ditt andre hjem i nabolaget"
+    ],
+    "hashtags": ["#vespaoghumla", "#grünerløkka", "#oslobrunch", "#detroitpizza", "#mikrobryggeri", "#løkka", "#oslocafe", "#brunsjoslo", "#craftbeer"]
+  }
+}

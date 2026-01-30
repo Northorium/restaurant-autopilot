@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Autopilot</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(90deg, #ff6b6b, #ffd93d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 2rem;
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .tab {
+      padding: 0.75rem 1.5rem;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .tab:hover { background: #252525; }
+    .tab.active { background: #333; color: #fff; border-color: #555; }
+    
+    .panel { display: none; }
+    .panel.active { display: block; }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+    
+    select, input, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+    }
+    
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    select:focus, input:focus, textarea:focus {
+      outline: none;
+      border-color: #ff6b6b;
+    }
+    
+    button {
+      padding: 0.75rem 2rem;
+      background: linear-gradient(90deg, #ff6b6b, #ffd93d);
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    button:hover { transform: scale(1.02); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    .output {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+    }
+    
+    .output h3 {
+      color: #ff6b6b;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    
+    .output-content {
+      white-space: pre-wrap;
+      line-height: 1.6;
+      color: #ddd;
+    }
+    
+    .copy-btn {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: #333;
+      font-size: 0.9rem;
+    }
+    
+    .rating-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .rating-btn {
+      width: 40px;
+      height: 40px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #888;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    
+    .rating-btn:hover { background: #252525; }
+    .rating-btn.active { background: #ffd93d; color: #000; border-color: #ffd93d; }
+    
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #333;
+      border-top-color: #ff6b6b;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-left: 0.5rem;
+    }
+    
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 Restaurant Autopilot</h1>
+    <p class="subtitle">AI-powered marketing for your restaurants</p>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="reviews">📝 Review Response</div>
+      <div class="tab" data-tab="weekly">📅 Week Content</div>
+      <div class="tab" data-tab="single">✨ Single Post</div>
+    </div>
+    
+    <!-- Review Response Panel -->
+    <div id="reviews" class="panel active">
+      <div class="form-group">
+        <label>Restaurant</label>
+        <select id="review-restaurant">
+          <option value="">Loading...</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>Rating</label>
+        <div class="rating-group" id="rating-group">
+          <button type="button" class="rating-btn" data-rating="1">1</button>
+          <button type="button" class="rating-btn" data-rating="2">2</button>
+          <button type="button" class="rating-btn" data-rating="3">3</button>
+          <button type="button" class="rating-btn" data-rating="4">4</button>
+          <button type="button" class="rating-btn active" data-rating="5">5</button>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Reviewer Name (optional)</label>
+        <input type="text" id="reviewer-name" placeholder="Guest">
+      </div>
+      
+      <div class="form-group">
+        <label>Review Text</label>
+        <textarea id="review-text" placeholder="Paste the review here..."></textarea>
+      </div>
+      
+      <button id="generate-review-btn">Generate Response</button>
+      <span id="review-loading" class="loading hidden"></span>
+      
+      <div id="review-output" class="output hidden">
+        <h3>Generated Response</h3>
+        <div class="output-content" id="review-response"></div>
+        <button class="copy-btn" onclick="copyToClipboard('review-response')">📋 Copy</button>
+      </div>
+    </div>
+    
+    <!-- Weekly Content Panel -->
+    <div id="weekly" class="panel">
+      <div class="form-group">
+        <label>Restaurant</label>
+        <select id="weekly-restaurant">
+          <option value="">Loading...</option>
+        </select>
+      </div>
+      
+      <button id="generate-weekly-btn">Generate Week Content</button>
+      <span id="weekly-loading" class="loading hidden"></span>
+      
+      <div id="weekly-output" class="output hidden">
+        <h3>Week Content Calendar</h3>
+        <div class="output-content" id="weekly-content"></div>
+        <button class="copy-btn" onclick="copyToClipboard('weekly-content')">📋 Copy All</button>
+      </div>
+    </div>
+    
+    <!-- Single Post Panel -->
+    <div id="single" class="panel">
+      <div class="form-group">
+        <label>Restaurant</label>
+        <select id="single-restaurant">
+          <option value="">Loading...</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>Post Type (optional)</label>
+        <input type="text" id="post-type" placeholder="e.g., 'new menu item', 'behind the scenes', 'weekend special'">
+      </div>
+      
+      <button id="generate-single-btn">Generate Post</button>
+      <span id="single-loading" class="loading hidden"></span>
+      
+      <div id="single-output" class="output hidden">
+        <h3>Generated Post</h3>
+        <div class="output-content" id="single-content"></div>
+        <button class="copy-btn" onclick="copyToClipboard('single-content')">📋 Copy</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    let selectedRating = 5;
+    
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+    
+    // Rating selection
+    document.querySelectorAll('.rating-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedRating = parseInt(btn.dataset.rating);
+      });
+    });
+    
+    // Load restaurants
+    async function loadRestaurants() {
+      const res = await fetch('/api/restaurants');
+      const restaurants = await res.json();
+      
+      const options = restaurants.map(r => 
+        `<option value="${r.id}">${r.name} - ${r.type}</option>`
+      ).join('');
+      
+      document.getElementById('review-restaurant').innerHTML = options;
+      document.getElementById('weekly-restaurant').innerHTML = options;
+      document.getElementById('single-restaurant').innerHTML = options;
+    }
+    
+    // Generate review response
+    document.getElementById('generate-review-btn').addEventListener('click', async () => {
+      const btn = document.getElementById('generate-review-btn');
+      const loading = document.getElementById('review-loading');
+      const output = document.getElementById('review-output');
+      
+      btn.disabled = true;
+      loading.classList.remove('hidden');
+      output.classList.add('hidden');
+      
+      try {
+        const res = await fetch('/api/review-response', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            restaurantId: document.getElementById('review-restaurant').value,
+            rating: selectedRating,
+            text: document.getElementById('review-text').value,
+            reviewerName: document.getElementById('reviewer-name').value
+          })
+        });
+        
+        const data = await res.json();
+        
+        if (data.error) throw new Error(data.error);
+        
+        document.getElementById('review-response').textContent = data.response;
+        output.classList.remove('hidden');
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        loading.classList.add('hidden');
+      }
+    });
+    
+    // Generate weekly content
+    document.getElementById('generate-weekly-btn').addEventListener('click', async () => {
+      const btn = document.getElementById('generate-weekly-btn');
+      const loading = document.getElementById('weekly-loading');
+      const output = document.getElementById('weekly-output');
+      
+      btn.disabled = true;
+      loading.classList.remove('hidden');
+      output.classList.add('hidden');
+      
+      try {
+        const res = await fetch('/api/week-content', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            restaurantId: document.getElementById('weekly-restaurant').value
+          })
+        });
+        
+        const data = await res.json();
+        
+        if (data.error) throw new Error(data.error);
+        
+        document.getElementById('weekly-content').textContent = data.content;
+        output.classList.remove('hidden');
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        loading.classList.add('hidden');
+      }
+    });
+    
+    // Generate single post
+    document.getElementById('generate-single-btn').addEventListener('click', async () => {
+      const btn = document.getElementById('generate-single-btn');
+      const loading = document.getElementById('single-loading');
+      const output = document.getElementById('single-output');
+      
+      btn.disabled = true;
+      loading.classList.remove('hidden');
+      output.classList.add('hidden');
+      
+      try {
+        const res = await fetch('/api/single-post', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            restaurantId: document.getElementById('single-restaurant').value,
+            postType: document.getElementById('post-type').value
+          })
+        });
+        
+        const data = await res.json();
+        
+        if (data.error) throw new Error(data.error);
+        
+        document.getElementById('single-content').textContent = data.content;
+        output.classList.remove('hidden');
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        loading.classList.add('hidden');
+      }
+    });
+    
+    // Copy to clipboard
+    function copyToClipboard(elementId) {
+      const text = document.getElementById(elementId).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Copied to clipboard!');
+      });
+    }
+    
+    // Initialize
+    loadRestaurants();
+  </script>
+</body>
+</html>

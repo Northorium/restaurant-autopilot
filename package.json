@@ -1,0 +1,19 @@
+{
+  "name": "restaurant-autopilot",
+  "version": "1.0.0",
+  "description": "AI-powered marketing automation for restaurants",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["restaurant", "ai", "marketing", "automation"],
+  "author": "Kim",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.72.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1"
+  }
+}

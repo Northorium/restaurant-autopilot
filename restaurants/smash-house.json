@@ -1,0 +1,38 @@
+{
+  "name": "Smash House",
+  "fullName": "Smash House",
+  "type": "Smash Burgers",
+  "location": {
+    "address": "Knud Askers vei 26, 1383 Asker",
+    "area": "Trekanten, Asker Mathall",
+    "city": "Asker"
+  },
+  "contact": {
+    "phone": null,
+    "email": null,
+    "instagram": "@smashhouseoslo",
+    "facebook": "Smash House Oslo"
+  },
+  "googleBusiness": {
+    "rating": 5.0,
+    "reviewCount": 2,
+    "placeId": null
+  },
+  "brand": {
+    "tagline": "Get ready for the illest burgers in Oslo 🍔 10/10 would smash 🤜🤛",
+    "description": "Smash burgers done right. High quality meat, perfectly smashed for that crispy edge, served with attitude.",
+    "tone": "Fun, bold, streetfood vibes, confident, youthful, energetic",
+    "keywords": ["smash burger", "illest burgers", "crispy", "streetfood", "quality meat"],
+    "emoji": "🍔🔥🤜🤛"
+  },
+  "content": {
+    "bestSellers": ["Classic Smash", "Double Smash", "Cheese Smash"],
+    "uniquePoints": [
+      "Perfectly smashed for crispy edges",
+      "High quality meat",
+      "Streetfood vibes",
+      "Bold flavors"
+    ],
+    "hashtags": ["#smashhouse", "#smashburger", "#burgeroslo", "#askermathall", "#streetfood", "#burgertime", "#asker", "#mathall", "#burgerlover"]
+  }
+}
