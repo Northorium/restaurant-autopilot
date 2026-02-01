@@ -25,7 +25,7 @@ dist/
 build/
 
 # Client data (sensitive)
-clients/*/ALL-GOOGLE-REVIEWS.json
+# clients/*/ALL-GOOGLE-REVIEWS.json - Temporarily enabled for demo
 clients/*/GENERATED-REPLIES.json
 clients/*/VOICE-ANALYSIS.json
 clients/*/REAL-TEMPLATES.json

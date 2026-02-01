@@ -1,0 +1,30 @@
+{
+    "totalReviews": 2,
+    "reviews": [
+        {
+            "reviewer": {
+                "displayName": "Dan Alexander Nypan"
+            },
+            "starRating": "FIVE",
+            "comment": "(Translated by Google) Had a double smashburger (which also came with double cheese - YASS!) and fries that were actually as crispy as you could want! Sooooo good!\n\n(Original)\nSpiste en dobbel smashburger (som ogsÃ¥ kom med dobbel ost - YASS!) og fries som faktisk var sÃ¥ sprÃ¸ som man Ã¸nsker! Meeeeget digg!",
+            "createTime": "2026-01-18T10:38:53.503832Z",
+            "updateTime": "2026-01-18T10:38:53.503832Z",
+            "name": "accounts/111860411412300084415/locations/7210166471309834109/reviews/Ci9DQUlRQUNvZENodHljRjlvT21WM2EwTk5TWGMwU3pVNVgyRmhWRFkxVWpSa2JuYxAB"
+        },
+        {
+            "reviewer": {
+                "displayName": "John Pork"
+            },
+            "starRating": "FIVE",
+            "comment": "(Translated by Google) It was delicious food etc. Niklas and I ate the schpa food, well done\n\n(Original)\nDet var deilig mat osv jeg og Niklas spiste den schpa maten valla",
+            "createTime": "2025-11-27T08:19:31.212790Z",
+            "updateTime": "2025-11-27T08:19:31.212790Z",
+            "reviewReply": {
+                "comment": "Beste burgeren i Ohio! Rater den 6/7. Stay lit bro!",
+                "updateTime": "2026-01-17T13:36:16.820859Z"
+            },
+            "name": "accounts/111860411412300084415/locations/7210166471309834109/reviews/Ci9DQUlRQUNvZENodHljRjlvT2tZNE9HNWZOamRzZEhFMVpIbHphREpRVGpFMVowRRAB"
+        }
+    ],
+    "business": "Smash House"
+}

@@ -3,95 +3,505 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Review Autopilot</title>
-  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <title>Restaurant Autopilot - Review Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #222;
+    }
+    
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+    
+    .logo span {
+      color: #10b981;
+    }
+    
+    .restaurant-badge {
+      background: #1a1a1a;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .restaurant-badge img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #10b981;
+    }
+    
+    .stat-value.warning {
+      color: #f59e0b;
+    }
+    
+    .stat-label {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 5px;
+    }
+    
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    h2 .badge {
+      background: #ef4444;
+      color: white;
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: 10px;
+    }
+    
+    .review-card {
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+    
+    .reviewer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .reviewer-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    
+    .reviewer-info h3 {
+      font-size: 1rem;
+      margin-bottom: 3px;
+    }
+    
+    .reviewer-meta {
+      font-size: 0.8rem;
+      color: #888;
+    }
+    
+    .stars {
+      color: #fbbf24;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+    }
+    
+    .review-text {
+      background: #0a0a0a;
+      padding: 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      border-left: 3px solid #333;
+    }
+    
+    .review-text .lang {
+      font-size: 0.75rem;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    
+    .response-section {
+      border-top: 1px solid #333;
+      padding-top: 20px;
+    }
+    
+    .response-label {
+      font-size: 0.8rem;
+      color: #10b981;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .response-label::before {
+      content: "✨";
+    }
+    
+    .response-text {
+      background: #0f2a1f;
+      border: 1px solid #10b981;
+      padding: 16px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    
+    .response-text[contenteditable="true"]:focus {
+      outline: none;
+      border-color: #34d399;
+    }
+    
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .btn-approve {
+      background: #10b981;
+      color: white;
+    }
+    
+    .btn-approve:hover {
+      background: #059669;
+    }
+    
+    .btn-edit {
+      background: #1a1a1a;
+      color: #fff;
+      border: 1px solid #333;
+    }
+    
+    .btn-edit:hover {
+      border-color: #10b981;
+    }
+    
+    .btn-reject {
+      background: transparent;
+      color: #888;
+    }
+    
+    .btn-reject:hover {
+      color: #ef4444;
+    }
+    
+    .btn-regenerate {
+      background: transparent;
+      color: #888;
+      margin-left: auto;
+    }
+    
+    .btn-regenerate:hover {
+      color: #10b981;
+    }
+    
+    .voice-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #1a1a1a;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 10px;
+    }
+    
+    .voice-indicator .dot {
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+    }
+    
+    .approved-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: 16px;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .review-card.approved {
+      position: relative;
+      opacity: 0.7;
+    }
+    
+    .review-card.approved .approved-overlay {
+      display: flex;
+    }
+    
+    .approved-check {
+      background: #10b981;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #10b981;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      display: none;
+      animation: slideIn 0.3s ease;
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+    }
+    
+    .empty-state .icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="topbar-content">
-      <div class="logo">
-        <div class="logo-icon">🦁</div>
-        <h1>Review Autopilot</h1>
-      </div>
-      <div style="display: flex; gap: 12px;">
-        <button class="btn-secondary" onclick="window.location.reload()">
-          <span class="material-icons" style="font-size: 18px;">refresh</span>
-          Oppdater
-        </button>
-      </div>
-    </div>
-  </div>
-  
   <div class="container">
-    <div class="stats-bar">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon reviews">
-            <span class="material-icons">rate_review</span>
-          </div>
-          <div class="stat-content">
-            <h3>Totalt</h3>
-            <div class="number" id="total-reviews">-</div>
+    <header>
+      <div class="logo">Restaurant<span>Autopilot</span></div>
+      <div class="restaurant-badge">
+        <span>📍</span>
+        <span>Asker Mathall</span>
+      </div>
+    </header>
+    
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-value">34</div>
+        <div class="stat-label">Totalt anmeldelser</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value warning">3</div>
+        <div class="stat-label">Venter på svar</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">3.9</div>
+        <div class="stat-label">Snittrating</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">2.4h</div>
+        <div class="stat-label">Responstid</div>
+      </div>
+    </div>
+    
+    <h2>Anmeldelser som trenger svar <span class="badge">3 nye</span></h2>
+    
+    <!-- Review 1 -->
+    <div class="review-card" id="review1">
+      <div class="approved-overlay">
+        <div class="approved-check">✓</div>
+      </div>
+      <div class="review-header">
+        <div class="reviewer">
+          <div class="reviewer-avatar">WL</div>
+          <div class="reviewer-info">
+            <h3>W L</h3>
+            <div class="reviewer-meta">Local Guide · 120 anmeldelser · 1 måned siden</div>
           </div>
         </div>
-        
-        <div class="stat-card">
-          <div class="stat-icon unanswered">
-            <span class="material-icons">pending</span>
-          </div>
-          <div class="stat-content">
-            <h3>Ubesvarte</h3>
-            <div class="number" id="unanswered-reviews">-</div>
-          </div>
+        <div class="stars">★★★★★</div>
+      </div>
+      <div class="review-text">
+        <div class="lang">🇬🇧 Engelsk</div>
+        Love the new place! Lots of seating and nice vibes. Enjoyed my chicken tikka masala fries from Desi Bites 😋
+      </div>
+      <div class="response-section">
+        <div class="response-label">AI-generert svar (engelsk)</div>
+        <div class="response-text" contenteditable="true" id="response1">W L! So glad you're enjoying the new space – and those tikka masala fries from Desi Bites are a great pick. Thanks for stopping by, hope to see you again soon!</div>
+        <div class="actions">
+          <button class="btn btn-approve" onclick="approve('review1')">✓ Godkjenn & publiser</button>
+          <button class="btn btn-edit" onclick="edit('response1')">✏️ Rediger</button>
+          <button class="btn btn-reject">✕ Forkast</button>
+          <button class="btn btn-regenerate">↻ Generer på nytt</button>
         </div>
-        
-        <div class="stat-card">
-          <div class="stat-icon queue">
-            <span class="material-icons">done_all</span>
-          </div>
-          <div class="stat-content">
-            <h3>Godkjent</h3>
-            <div class="number" id="queue-count">0</div>
-          </div>
+        <div class="voice-indicator">
+          <span class="dot"></span>
+          Stemme: Asker Mathall v1 · 85% match
         </div>
       </div>
     </div>
     
-    <div class="controls">
-      <select id="business-select">
-        <option value="essa">ESSA</option>
-        <option value="vespa">Vespa & Humla</option>
-        <option value="smash">Smash House</option>
-        <option value="blokk">BLOKK Asker</option>
-      </select>
-      <button class="btn-primary" onclick="loadReviews()">
-        <span class="material-icons" style="font-size: 18px;">download</span>
-        Last inn reviews
-      </button>
-      <button class="btn-secondary" onclick="generateAll()" id="generate-all-btn" disabled>
-        <span class="material-icons" style="font-size: 18px;">auto_awesome</span>
-        Generer alle
-      </button>
+    <!-- Review 2 -->
+    <div class="review-card" id="review2">
+      <div class="approved-overlay">
+        <div class="approved-check">✓</div>
+      </div>
+      <div class="review-header">
+        <div class="reviewer">
+          <div class="reviewer-avatar">IM</div>
+          <div class="reviewer-info">
+            <h3>Inger Mehra</h3>
+            <div class="reviewer-meta">3 anmeldelser · 1 uke siden · 🆕 NY</div>
+          </div>
+        </div>
+        <div class="stars">★★★★★</div>
+      </div>
+      <div class="review-text">
+        <div class="lang">🇬🇧 Engelsk</div>
+        We tried the ramen from Tomodomo and it was outstanding
+      </div>
+      <div class="response-section">
+        <div class="response-label">AI-generert svar (engelsk)</div>
+        <div class="response-text" contenteditable="true" id="response2">Inger! Great to hear – Tomodomo's ramen is one of our favorites too. Thanks for visiting and for the kind words!</div>
+        <div class="actions">
+          <button class="btn btn-approve" onclick="approve('review2')">✓ Godkjenn & publiser</button>
+          <button class="btn btn-edit" onclick="edit('response2')">✏️ Rediger</button>
+          <button class="btn btn-reject">✕ Forkast</button>
+          <button class="btn btn-regenerate">↻ Generer på nytt</button>
+        </div>
+        <div class="voice-indicator">
+          <span class="dot"></span>
+          Stemme: Asker Mathall v1 · 89% match
+        </div>
+      </div>
     </div>
     
-    <div class="reviews-grid" id="reviews-container">
-      <div class="empty-state">
-        <span class="material-icons">inbox</span>
-        <h2>Velg en bedrift</h2>
-        <p>Last inn reviews for å komme i gang</p>
+    <!-- Review 3 -->
+    <div class="review-card" id="review3">
+      <div class="approved-overlay">
+        <div class="approved-check">✓</div>
+      </div>
+      <div class="review-header">
+        <div class="reviewer">
+          <div class="reviewer-avatar">AS</div>
+          <div class="reviewer-info">
+            <h3>Azhar Ahmed Shaikh</h3>
+            <div class="reviewer-meta">Local Guide · 67 anmeldelser · 1 måned siden</div>
+          </div>
+        </div>
+        <div class="stars">★★★★★</div>
+      </div>
+      <div class="review-text">
+        <div class="lang">🇬🇧 Engelsk</div>
+        Amazing fried chicken and experience
+      </div>
+      <div class="response-section">
+        <div class="response-label">AI-generert svar (engelsk)</div>
+        <div class="response-text" contenteditable="true" id="response3">Azhar, thank you! Happy to hear the fried chicken hit the spot. See you next time!</div>
+        <div class="actions">
+          <button class="btn btn-approve" onclick="approve('review3')">✓ Godkjenn & publiser</button>
+          <button class="btn btn-edit" onclick="edit('response3')">✏️ Rediger</button>
+          <button class="btn btn-reject">✕ Forkast</button>
+          <button class="btn btn-regenerate">↻ Generer på nytt</button>
+        </div>
+        <div class="voice-indicator">
+          <span class="dot"></span>
+          Stemme: Asker Mathall v1 · 91% match
+        </div>
       </div>
     </div>
   </div>
   
-  <button class="fab" onclick="postAll()" id="fab-post" disabled>
-    <span class="material-icons">send</span>
-    <span class="fab-badge" id="fab-badge" style="display: none;">0</span>
-  </button>
+  <div class="toast" id="toast">✓ Svar publisert til Google</div>
   
-  <div class="snackbar" id="snackbar"></div>
-  
-  <script src="app.js"></script>
+  <script>
+    function approve(reviewId) {
+      const card = document.getElementById(reviewId);
+      card.classList.add('approved');
+      
+      const toast = document.getElementById('toast');
+      toast.style.display = 'block';
+      
+      // Update stats
+      const waitingEl = document.querySelector('.stat-value.warning');
+      const current = parseInt(waitingEl.textContent);
+      waitingEl.textContent = current - 1;
+      
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3000);
+    }
+    
+    function edit(responseId) {
+      const el = document.getElementById(responseId);
+      el.focus();
+      // Select all text
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  </script>
 </body>
 </html>
