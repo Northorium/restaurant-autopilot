@@ -3,119 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restaurant Autopilot - Review Dashboard</title>
+  <title>Review Autopilot - ESSA</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: #0a0a0a;
-      color: #fff;
-      min-height: 100vh;
+      color: #e5e5e5;
       padding: 20px;
     }
     
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+    .container { max-width: 1000px; margin: 0 auto; }
     
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .header {
       margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #222;
     }
     
     .logo {
-      font-size: 1.4rem;
-      font-weight: 600;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
     }
     
-    .logo span {
-      color: #10b981;
-    }
-    
-    .restaurant-badge {
-      background: #1a1a1a;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .restaurant-badge img {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-    }
+    .logo .highlight { color: #10b981; }
     
     .stats {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
       margin-bottom: 30px;
     }
     
     .stat-card {
       background: #1a1a1a;
-      padding: 20px;
+      padding: 24px;
       border-radius: 12px;
-      text-align: center;
+      border: 1px solid #333;
+    }
+    
+    .stat-label {
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
     }
     
     .stat-value {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 700;
       color: #10b981;
     }
     
-    .stat-value.warning {
-      color: #f59e0b;
-    }
+    .stat-value.warning { color: #f59e0b; }
     
-    .stat-label {
-      font-size: 0.85rem;
-      color: #888;
-      margin-top: 5px;
-    }
-    
-    h2 {
-      font-size: 1.2rem;
+    .section-title {
+      font-size: 1.5rem;
       margin-bottom: 20px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
     
-    h2 .badge {
+    .badge {
       background: #ef4444;
       color: white;
-      font-size: 0.75rem;
-      padding: 3px 10px;
-      border-radius: 10px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
     }
+    
+    .reviews { display: flex; flex-direction: column; gap: 20px; }
     
     .review-card {
       background: #1a1a1a;
-      border-radius: 16px;
+      border: 1px solid #333;
+      border-radius: 12px;
       padding: 24px;
-      margin-bottom: 20px;
+      position: relative;
     }
     
     .review-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 15px;
+      margin-bottom: 16px;
     }
     
     .reviewer {
@@ -125,85 +97,65 @@
     }
     
     .reviewer-avatar {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #667eea, #764ba2);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 1.1rem;
     }
     
     .reviewer-info h3 {
-      font-size: 1rem;
-      margin-bottom: 3px;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
     }
     
     .reviewer-meta {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #888;
     }
     
     .stars {
-      color: #fbbf24;
-      font-size: 1.1rem;
-      letter-spacing: 2px;
+      color: #f59e0b;
+      font-size: 1.2rem;
     }
     
     .review-text {
-      background: #0a0a0a;
+      background: #0f0f0f;
       padding: 16px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      font-size: 0.95rem;
-      line-height: 1.6;
+      border-radius: 8px;
+      margin-bottom: 16px;
       border-left: 3px solid #333;
     }
     
-    .review-text .lang {
-      font-size: 0.75rem;
-      color: #666;
-      margin-bottom: 8px;
-    }
-    
     .response-section {
-      border-top: 1px solid #333;
-      padding-top: 20px;
+      background: #0f0f0f;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 3px solid #10b981;
     }
     
     .response-label {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #10b981;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    
-    .response-label::before {
-      content: "✨";
+      margin-bottom: 8px;
+      font-weight: 600;
     }
     
     .response-text {
-      background: #0f2a1f;
-      border: 1px solid #10b981;
-      padding: 16px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      font-size: 0.95rem;
+      color: #e5e5e5;
       line-height: 1.6;
-    }
-    
-    .response-text[contenteditable="true"]:focus {
-      outline: none;
-      border-color: #34d399;
+      margin-bottom: 16px;
+      min-height: 60px;
     }
     
     .actions {
       display: flex;
       gap: 10px;
+      flex-wrap: wrap;
     }
     
     .btn {
@@ -214,9 +166,6 @@
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
     
     .btn-approve {
@@ -228,280 +177,216 @@
       background: #059669;
     }
     
-    .btn-edit {
-      background: #1a1a1a;
-      color: #fff;
-      border: 1px solid #333;
-    }
-    
-    .btn-edit:hover {
-      border-color: #10b981;
-    }
-    
-    .btn-reject {
-      background: transparent;
-      color: #888;
-    }
-    
-    .btn-reject:hover {
-      color: #ef4444;
-    }
-    
-    .btn-regenerate {
-      background: transparent;
-      color: #888;
-      margin-left: auto;
-    }
-    
-    .btn-regenerate:hover {
-      color: #10b981;
-    }
-    
-    .voice-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #1a1a1a;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      color: #888;
-      margin-top: 10px;
-    }
-    
-    .voice-indicator .dot {
-      width: 6px;
-      height: 6px;
-      background: #10b981;
-      border-radius: 50%;
-    }
-    
-    .approved-overlay {
-      display: none;
-      position: absolute;
-      inset: 0;
-      background: rgba(16, 185, 129, 0.1);
-      border-radius: 16px;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .review-card.approved {
-      position: relative;
-      opacity: 0.7;
-    }
-    
-    .review-card.approved .approved-overlay {
-      display: flex;
-    }
-    
-    .approved-check {
-      background: #10b981;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-    }
-    
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: #10b981;
+    .btn-generate {
+      background: #3b82f6;
       color: white;
-      padding: 15px 25px;
-      border-radius: 10px;
-      display: none;
-      animation: slideIn 0.3s ease;
     }
     
-    @keyframes slideIn {
-      from { transform: translateX(100px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
+    .btn-generate:hover {
+      background: #2563eb;
     }
     
-    .empty-state {
+    .btn-generate:disabled {
+      background: #333;
+      cursor: not-allowed;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #888;
+    }
+    
+    .spinner {
+      border: 3px solid #333;
+      border-top-color: #10b981;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .empty {
       text-align: center;
       padding: 60px 20px;
-      color: #666;
+      color: #888;
     }
     
-    .empty-state .icon {
+    .empty-icon {
       font-size: 4rem;
+      margin-bottom: 16px;
+    }
+    
+    select {
+      background: #1a1a1a;
+      color: #e5e5e5;
+      border: 1px solid #333;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 1rem;
       margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <header>
-      <div class="logo">Restaurant<span>Autopilot</span></div>
-      <div class="restaurant-badge">
-        <span>📍</span>
-        <span>Asker Mathall</span>
-      </div>
-    </header>
+    <div class="header">
+      <div class="logo">Restaurant<span class="highlight">Autopilot</span></div>
+    </div>
     
     <div class="stats">
       <div class="stat-card">
-        <div class="stat-value">34</div>
         <div class="stat-label">Totalt anmeldelser</div>
+        <div class="stat-value" id="total">-</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value warning">3</div>
         <div class="stat-label">Venter på svar</div>
+        <div class="stat-value warning" id="unanswered">-</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">3.9</div>
         <div class="stat-label">Snittrating</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">2.4h</div>
-        <div class="stat-label">Responstid</div>
+        <div class="stat-value" id="rating">-</div>
       </div>
     </div>
     
-    <h2>Anmeldelser som trenger svar <span class="badge">3 nye</span></h2>
+    <select id="business-select">
+      <option value="essa">ESSA</option>
+      <option value="vespa">Vespa & Humla</option>
+      <option value="smash">Smash House</option>
+      <option value="blokk">BLOKK Asker</option>
+    </select>
     
-    <!-- Review 1 -->
-    <div class="review-card" id="review1">
-      <div class="approved-overlay">
-        <div class="approved-check">✓</div>
-      </div>
-      <div class="review-header">
-        <div class="reviewer">
-          <div class="reviewer-avatar">WL</div>
-          <div class="reviewer-info">
-            <h3>W L</h3>
-            <div class="reviewer-meta">Local Guide · 120 anmeldelser · 1 måned siden</div>
-          </div>
-        </div>
-        <div class="stars">★★★★★</div>
-      </div>
-      <div class="review-text">
-        <div class="lang">🇬🇧 Engelsk</div>
-        Love the new place! Lots of seating and nice vibes. Enjoyed my chicken tikka masala fries from Desi Bites 😋
-      </div>
-      <div class="response-section">
-        <div class="response-label">AI-generert svar (engelsk)</div>
-        <div class="response-text" contenteditable="true" id="response1">W L! So glad you're enjoying the new space – and those tikka masala fries from Desi Bites are a great pick. Thanks for stopping by, hope to see you again soon!</div>
-        <div class="actions">
-          <button class="btn btn-approve" onclick="approve('review1')">✓ Godkjenn & publiser</button>
-          <button class="btn btn-edit" onclick="edit('response1')">✏️ Rediger</button>
-          <button class="btn btn-reject">✕ Forkast</button>
-          <button class="btn btn-regenerate">↻ Generer på nytt</button>
-        </div>
-        <div class="voice-indicator">
-          <span class="dot"></span>
-          Stemme: Asker Mathall v1 · 85% match
-        </div>
-      </div>
+    <div class="section-title">
+      Anmeldelser som trenger svar
+      <span class="badge" id="badge">0</span>
     </div>
     
-    <!-- Review 2 -->
-    <div class="review-card" id="review2">
-      <div class="approved-overlay">
-        <div class="approved-check">✓</div>
-      </div>
-      <div class="review-header">
-        <div class="reviewer">
-          <div class="reviewer-avatar">IM</div>
-          <div class="reviewer-info">
-            <h3>Inger Mehra</h3>
-            <div class="reviewer-meta">3 anmeldelser · 1 uke siden · 🆕 NY</div>
-          </div>
-        </div>
-        <div class="stars">★★★★★</div>
-      </div>
-      <div class="review-text">
-        <div class="lang">🇬🇧 Engelsk</div>
-        We tried the ramen from Tomodomo and it was outstanding
-      </div>
-      <div class="response-section">
-        <div class="response-label">AI-generert svar (engelsk)</div>
-        <div class="response-text" contenteditable="true" id="response2">Inger! Great to hear – Tomodomo's ramen is one of our favorites too. Thanks for visiting and for the kind words!</div>
-        <div class="actions">
-          <button class="btn btn-approve" onclick="approve('review2')">✓ Godkjenn & publiser</button>
-          <button class="btn btn-edit" onclick="edit('response2')">✏️ Rediger</button>
-          <button class="btn btn-reject">✕ Forkast</button>
-          <button class="btn btn-regenerate">↻ Generer på nytt</button>
-        </div>
-        <div class="voice-indicator">
-          <span class="dot"></span>
-          Stemme: Asker Mathall v1 · 89% match
-        </div>
-      </div>
-    </div>
-    
-    <!-- Review 3 -->
-    <div class="review-card" id="review3">
-      <div class="approved-overlay">
-        <div class="approved-check">✓</div>
-      </div>
-      <div class="review-header">
-        <div class="reviewer">
-          <div class="reviewer-avatar">AS</div>
-          <div class="reviewer-info">
-            <h3>Azhar Ahmed Shaikh</h3>
-            <div class="reviewer-meta">Local Guide · 67 anmeldelser · 1 måned siden</div>
-          </div>
-        </div>
-        <div class="stars">★★★★★</div>
-      </div>
-      <div class="review-text">
-        <div class="lang">🇬🇧 Engelsk</div>
-        Amazing fried chicken and experience
-      </div>
-      <div class="response-section">
-        <div class="response-label">AI-generert svar (engelsk)</div>
-        <div class="response-text" contenteditable="true" id="response3">Azhar, thank you! Happy to hear the fried chicken hit the spot. See you next time!</div>
-        <div class="actions">
-          <button class="btn btn-approve" onclick="approve('review3')">✓ Godkjenn & publiser</button>
-          <button class="btn btn-edit" onclick="edit('response3')">✏️ Rediger</button>
-          <button class="btn btn-reject">✕ Forkast</button>
-          <button class="btn btn-regenerate">↻ Generer på nytt</button>
-        </div>
-        <div class="voice-indicator">
-          <span class="dot"></span>
-          Stemme: Asker Mathall v1 · 91% match
-        </div>
+    <div id="reviews" class="reviews">
+      <div class="loading">
+        <div class="spinner"></div>
+        <div>Laster reviews...</div>
       </div>
     </div>
   </div>
   
-  <div class="toast" id="toast">✓ Svar publisert til Google</div>
-  
   <script>
-    function approve(reviewId) {
-      const card = document.getElementById(reviewId);
-      card.classList.add('approved');
+    let currentBusiness = 'essa';
+    
+    document.getElementById('business-select').addEventListener('change', (e) => {
+      currentBusiness = e.target.value;
+      loadReviews();
+    });
+    
+    async function loadReviews() {
+      const container = document.getElementById('reviews');
+      container.innerHTML = '<div class="loading"><div class="spinner"></div><div>Laster reviews...</div></div>';
       
-      const toast = document.getElementById('toast');
-      toast.style.display = 'block';
-      
-      // Update stats
-      const waitingEl = document.querySelector('.stat-value.warning');
-      const current = parseInt(waitingEl.textContent);
-      waitingEl.textContent = current - 1;
-      
-      setTimeout(() => {
-        toast.style.display = 'none';
-      }, 3000);
+      try {
+        const res = await fetch(`/api/reviews/${currentBusiness}`);
+        const data = await res.json();
+        
+        document.getElementById('total').textContent = data.total;
+        document.getElementById('unanswered').textContent = data.unanswered;
+        document.getElementById('badge').textContent = data.unanswered;
+        
+        // Calculate average rating
+        const avgRating = data.reviews.length > 0 
+          ? (data.reviews.reduce((sum, r) => sum + (r.starRating === 'FIVE' ? 5 : r.starRating === 'FOUR' ? 4 : r.starRating === 'THREE' ? 3 : r.starRating === 'TWO' ? 2 : 1), 0) / data.reviews.length).toFixed(1)
+          : '-';
+        document.getElementById('rating').textContent = avgRating;
+        
+        if (data.reviews.length === 0) {
+          container.innerHTML = '<div class="empty"><div class="empty-icon">✓</div><h2>Alle reviews besvart!</h2><p>Ingen ubesvarte reviews funnet</p></div>';
+          return;
+        }
+        
+        container.innerHTML = data.reviews.map(review => {
+          const initials = review.reviewer.displayName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+          const stars = '⭐'.repeat(review.starRating === 'FIVE' ? 5 : review.starRating === 'FOUR' ? 4 : review.starRating === 'THREE' ? 3 : review.starRating === 'TWO' ? 2 : 1);
+          
+          return `
+            <div class="review-card" data-review-id="${review.reviewId || review.name}">
+              <div class="review-header">
+                <div class="reviewer">
+                  <div class="reviewer-avatar">${initials}</div>
+                  <div class="reviewer-info">
+                    <h3>${review.reviewer.displayName}</h3>
+                    <div class="reviewer-meta">${new Date(review.createTime).toLocaleDateString('no')} · Google</div>
+                  </div>
+                </div>
+                <div class="stars">${stars}</div>
+              </div>
+              <div class="review-text">${review.comment}</div>
+              <div class="response-section">
+                <div class="response-label">✨ AI-generert svar</div>
+                <div class="response-text" id="response-${review.reviewId || review.name}">
+                  <em style="color: #888;">Klikk "Generer svar" for å lage et AI-drevet svar...</em>
+                </div>
+                <div class="actions">
+                  <button class="btn btn-generate" onclick="generateReply('${review.reviewId || review.name}', '${review.starRating}', \`${review.comment.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, '${review.reviewer.displayName}')">
+                    ✨ Generer svar
+                  </button>
+                  <button class="btn btn-approve" style="display:none;">
+                    ✓ Godkjenn & publiser
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        
+      } catch (err) {
+        container.innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><h2>Feil ved lasting</h2><p>${err.message}</p></div>`;
+      }
     }
     
-    function edit(responseId) {
-      const el = document.getElementById(responseId);
-      el.focus();
-      // Select all text
-      const range = document.createRange();
-      range.selectNodeContents(el);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
+    async function generateReply(reviewId, rating, comment, reviewerName) {
+      const btn = event.target;
+      const responseEl = document.getElementById(`response-${reviewId}`);
+      const approveBtn = btn.parentElement.querySelector('.btn-approve');
+      
+      btn.disabled = true;
+      btn.textContent = 'Genererer...';
+      responseEl.innerHTML = '<div style="color: #888;">AI tenker... 🤔</div>';
+      
+      try {
+        const res = await fetch('/api/generate-reply', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            business: currentBusiness,
+            rating,
+            comment,
+            reviewerName
+          })
+        });
+        
+        const data = await res.json();
+        
+        if (data.reply) {
+          responseEl.textContent = data.reply;
+          btn.style.display = 'none';
+          approveBtn.style.display = 'inline-block';
+        } else {
+          responseEl.innerHTML = '<em style="color: #ef4444;">Kunne ikke generere svar</em>';
+          btn.disabled = false;
+          btn.textContent = '✨ Generer svar';
+        }
+        
+      } catch (err) {
+        responseEl.innerHTML = `<em style="color: #ef4444;">Feil: ${err.message}</em>`;
+        btn.disabled = false;
+        btn.textContent = '✨ Generer svar';
+      }
     }
+    
+    // Load on page load
+    loadReviews();
   </script>
 </body>
 </html>
