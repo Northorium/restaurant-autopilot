@@ -1,0 +1,24 @@
+{
+  "business": "Smash House",
+  "analyzedAt": "2026-02-01T09:47:04.078Z",
+  "sampleSize": 1,
+  "characteristics": {
+    "avgLength": 51,
+    "useEmojis": false,
+    "avgEmojisPerReply": 0,
+    "primaryTone": "casual",
+    "toneScores": {
+      "formal": 0,
+      "casual": 1,
+      "warm": 0,
+      "professional": 0
+    }
+  },
+  "examples": [
+    {
+      "rating": "FIVE",
+      "reply": "Beste burgeren i Ohio! Rater den 6/7. Stay lit bro!",
+      "length": 51
+    }
+  ]
+}

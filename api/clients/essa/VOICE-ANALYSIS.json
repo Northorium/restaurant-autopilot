@@ -1,0 +1,44 @@
+{
+  "business": "ESSA",
+  "analyzedAt": "2026-02-01T09:47:04.075Z",
+  "sampleSize": 35,
+  "characteristics": {
+    "avgLength": 145,
+    "useEmojis": false,
+    "avgEmojisPerReply": 0,
+    "primaryTone": "casual",
+    "toneScores": {
+      "formal": 0,
+      "casual": 34,
+      "warm": 18,
+      "professional": 1
+    }
+  },
+  "examples": [
+    {
+      "rating": "FIVE",
+      "reply": "âœ¨ðŸ§¡",
+      "length": 7
+    },
+    {
+      "rating": "FIVE",
+      "reply": "Tusen takk for fin tilbakemelding <3",
+      "length": 36
+    },
+    {
+      "rating": "FIVE",
+      "reply": "Tusen takk for den bra tilbakemeldingen! <3",
+      "length": 43
+    },
+    {
+      "rating": "FIVE",
+      "reply": "Hei Henrik!\nTusen hjertelig takk for en fin anmeldelse! :) \nVi pÃ¥ Essa setter pris pÃ¥ slike tilbakemeldinger. \nVi ses igjen!\nHilsner fra vÃ¥rs! <3",
+      "length": 148
+    },
+    {
+      "rating": "FIVE",
+      "reply": "Hei John Arne!\n\nTusen takk for hyggelig tilbakemelding!\nDet varmer hjertene vÃ¥re her pÃ¥ EssaðŸ§¡",
+      "length": 98
+    }
+  ]
+}
