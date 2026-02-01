@@ -1,0 +1,35 @@
+# Environment variables
+.env
+.env.local
+
+# Node modules
+node_modules/
+api/node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build outputs
+dist/
+build/
+
+# Client data (sensitive)
+clients/*/ALL-GOOGLE-REVIEWS.json
+clients/*/GENERATED-REPLIES.json
+clients/*/VOICE-ANALYSIS.json
+clients/*/REAL-TEMPLATES.json
+
+# Backup files
+*.bak
+*~

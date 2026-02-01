@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Autopilot - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1a202c;
+        }
+
+        .stat-card .trend {
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .trend.up {
+            color: #48bb78;
+        }
+
+        .trend.down {
+            color: #f56565;
+        }
+
+        .review-queue {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .queue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .queue-header h2 {
+            font-size: 20px;
+            color: #1a202c;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-tabs button {
+            padding: 8px 16px;
+            border: none;
+            background: #f7fafc;
+            color: #718096;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .filter-tabs button.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .review-item {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+
+        .review-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+        }
+
+        .review-item.priority-high {
+            border-left: 4px solid #f56565;
+        }
+
+        .review-item.priority-medium {
+            border-left: 4px solid #ed8936;
+        }
+
+        .review-item.priority-low {
+            border-left: 4px solid #48bb78;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .reviewer-details h4 {
+            font-size: 16px;
+            color: #1a202c;
+            margin-bottom: 4px;
+        }
+
+        .reviewer-details .meta {
+            font-size: 13px;
+            color: #718096;
+        }
+
+        .stars {
+            color: #fbbf24;
+            font-size: 16px;
+        }
+
+        .review-content {
+            background: #f7fafc;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .review-content .label {
+            font-size: 12px;
+            color: #718096;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .review-content .text {
+            color: #2d3748;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .sentiment {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .sentiment.positive {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .sentiment.negative {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .sentiment.neutral {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .ai-response {
+            background: #ebf4ff;
+            padding: 16px;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+            margin-bottom: 16px;
+        }
+
+        .ai-response .label {
+            font-size: 12px;
+            color: #3182ce;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ai-response .text {
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-approve {
+            background: #48bb78;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-approve:hover {
+            background: #38a169;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-edit {
+            background: #ed8936;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-edit:hover {
+            background: #dd6b20;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(237, 137, 54, 0.3);
+        }
+
+        .btn-reject {
+            background: #f56565;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background: #e53e3e;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(245, 101, 101, 0.3);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge.new {
+            background: #667eea;
+            color: white;
+        }
+
+        .badge.vespa {
+            background: #fbbf24;
+            color: #78350f;
+        }
+
+        .badge.essa {
+            background: #34d399;
+            color: #065f46;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #718096;
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🦁 Review Autopilot Dashboard</h1>
+            <p>Sist oppdatert: 1. februar 2026, 01:35</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Venter på godkjenning</h3>
+                <div class="value">12</div>
+                <div class="trend up">↑ 3 nye i dag</div>
+            </div>
+            <div class="stat-card">
+                <h3>Godkjent denne uken</h3>
+                <div class="value">47</div>
+                <div class="trend up">↑ 12% fra forrige uke</div>
+            </div>
+            <div class="stat-card">
+                <h3>Svar-rate</h3>
+                <div class="value">89%</div>
+                <div class="trend up">↑ fra 7% (før autopilot)</div>
+            </div>
+            <div class="stat-card">
+                <h3>Gjennomsnittlig godkjenningstid</h3>
+                <div class="value">28s</div>
+                <div class="trend down">↓ 4m 32s spart per review</div>
+            </div>
+        </div>
+
+        <!-- Review Queue -->
+        <div class="review-queue">
+            <div class="queue-header">
+                <h2>Anmeldelser som venter</h2>
+                <div class="filter-tabs">
+                    <button class="active">Alle (12)</button>
+                    <button>Negative (2)</button>
+                    <button>Vespa (8)</button>
+                    <button>ESSA (4)</button>
+                </div>
+            </div>
+
+            <!-- Review Item 1 - High Priority (Negative) -->
+            <div class="review-item priority-high">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">LH</div>
+                        <div class="reviewer-details">
+                            <h4>Lars Hansen <span class="badge new">NY</span> <span class="badge vespa">Vespa & Humla</span></h4>
+                            <div class="meta">
+                                <span class="stars">⭐⭐</span> · 23. januar 2026 · Google
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-content">
+                    <div class="label">Original anmeldelse</div>
+                    <div class="text">
+                        Hadde hørt mye bra om stedet, men ble skuffet. Ventetiden var lang selv om vi hadde bestilt bord. Maten var ok, men ikke noe spesielt til den prisen. Ville ikke kommet tilbake.
+                    </div>
+                    <span class="sentiment negative">🔴 Negativ</span>
+                </div>
+
+                <div class="ai-response">
+                    <div class="label">
+                        🤖 AI-generert svar (krever godkjenning)
+                    </div>
+                    <div class="text">
+                        Hei Lars, tusen takk for tilbakemeldingen, selv om det ikke ble den opplevelsen vi ønsker å gi. Vi beklager den lange ventetiden - det skal ikke skje, og vi skal se på rutinene våre. Når det gjelder maten, setter vi alltid pris på ærlige tilbakemeldinger. Vi jobber kontinuerlig med menyen og prising. Hvis du gir oss en ny sjanse, lover vi å gjøre det bedre. Velkommen til å kontakte oss direkte på hei@vespahumla.no 🐝
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-approve">✓ Godkjenn & Send</button>
+                    <button class="btn btn-edit">✏️ Rediger</button>
+                    <button class="btn btn-reject">✕</button>
+                </div>
+            </div>
+
+            <!-- Review Item 2 - Low Priority (Positive) -->
+            <div class="review-item priority-low">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">MJ</div>
+                        <div class="reviewer-details">
+                            <h4>Maria Johansen <span class="badge new">NY</span> <span class="badge essa">ESSA</span></h4>
+                            <div class="meta">
+                                <span class="stars">⭐⭐⭐⭐⭐</span> · 31. januar 2026 · Google
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-content">
+                    <div class="label">Original anmeldelse</div>
+                    <div class="text">
+                        Helt fantastisk sted! Burgerne er sinnsykt gode, og atmosfæren er så koselig. Kommer definitivt tilbake. Anbefales på det varmeste! 🍔
+                    </div>
+                    <span class="sentiment positive">🟢 Positiv</span>
+                </div>
+
+                <div class="ai-response">
+                    <div class="label">
+                        🤖 AI-generert svar
+                    </div>
+                    <div class="text">
+                        Å, tusen takk Maria! 🙏 Det varmer hjertet å høre at du koste deg hos oss. Vi gleder oss allerede til å se deg igjen! 🍔✨
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-approve">✓ Godkjenn & Send</button>
+                    <button class="btn btn-edit">✏️ Rediger</button>
+                    <button class="btn btn-reject">✕</button>
+                </div>
+            </div>
+
+            <!-- Review Item 3 - Medium Priority (No comment, just stars) -->
+            <div class="review-item priority-medium">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">PB</div>
+                        <div class="reviewer-details">
+                            <h4>Per Berg <span class="badge vespa">Vespa & Humla</span></h4>
+                            <div class="meta">
+                                <span class="stars">⭐⭐⭐⭐</span> · 30. januar 2026 · Google
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-content">
+                    <div class="label">Original anmeldelse</div>
+                    <div class="text" style="color: #a0aec0; font-style: italic;">
+                        Ingen kommentar (kun stjerner)
+                    </div>
+                    <span class="sentiment neutral">⚪ Nøytral</span>
+                </div>
+
+                <div class="ai-response">
+                    <div class="label">
+                        🤖 AI-generert svar
+                    </div>
+                    <div class="text">
+                        Takk for 4 stjerner, Per! 🌟 Håper vi sees snart igjen! 🐝
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-approve">✓ Godkjenn & Send</button>
+                    <button class="btn btn-edit">✏️ Rediger</button>
+                    <button class="btn btn-reject">✕</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

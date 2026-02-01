@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review Autopilot - DEMO</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      padding: 20px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    
+    header {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    h1 { font-size: 32px; margin-bottom: 10px; }
+    .stats {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+    .stat { display: flex; align-items: center; gap: 8px; }
+    .stat strong { color: #1a1a1a; font-size: 24px; }
+    
+    .controls {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    select, button {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    
+    button {
+      background: #007AFF;
+      color: white;
+      border: none;
+      font-weight: 500;
+    }
+    button:hover { background: #0056b3; }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    
+    .reviews { display: flex; flex-direction: column; gap: 20px; }
+    
+    .review-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    
+    .reviewer-info h3 { font-size: 18px; margin-bottom: 4px; }
+    .rating { color: #FF9500; font-size: 20px; }
+    
+    .review-text {
+      color: #333;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      padding: 16px;
+      background: #f9f9f9;
+      border-radius: 8px;
+    }
+    
+    .reply-section {
+      border-top: 2px solid #f0f0f0;
+      padding-top: 20px;
+    }
+    
+    .reply-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .reply-header h4 { font-size: 14px; color: #666; text-transform: uppercase; }
+    
+    .ai-badge {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+      margin-bottom: 12px;
+    }
+    
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .btn-generate {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .btn-generate:hover { opacity: 0.9; }
+    
+    .btn-approve { background: #34C759; }
+    .btn-approve:hover { background: #28a745; }
+    
+    .btn-skip { background: #FF3B30; }
+    .btn-skip:hover { background: #dc3545; }
+    
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-left: 8px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .queue {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      min-width: 250px;
+    }
+    
+    .queue h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .queue-count {
+      background: #34C759;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+    
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #34C759;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+    
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🦁 Review Autopilot</h1>
+      <p>AI-drevet review-svar med ekte ESSA-stemme</p>
+      <div class="stats">
+        <div class="stat">
+          <span>Total:</span>
+          <strong id="total-reviews">-</strong>
+        </div>
+        <div class="stat">
+          <span>Ubesvarte:</span>
+          <strong id="unanswered-reviews">-</strong>
+        </div>
+      </div>
+    </header>
+    
+    <div class="controls">
+      <select id="business-select">
+        <option value="essa">ESSA</option>
+        <option value="vespa">Vespa & Humla</option>
+        <option value="smash">Smash House</option>
+        <option value="blokk">BLOKK Asker</option>
+      </select>
+      <button onclick="loadReviews()">Last inn reviews</button>
+      <button onclick="generateAll()" id="generate-all-btn" disabled>Generer alle svar</button>
+    </div>
+    
+    <div class="reviews" id="reviews-container">
+      <p style="text-align: center; color: #666;">Velg en bedrift og last inn reviews</p>
+    </div>
+  </div>
+  
+  <div class="queue">
+    <h3>
+      Godkjent kø
+      <span class="queue-count" id="queue-count">0</span>
+    </h3>
+    <button onclick="postAll()" style="width: 100%;" id="post-all-btn" disabled>Post alle til Google</button>
+  </div>
+  
+  <div class="toast" id="toast"></div>
+  
+  <script>
+    let currentReviews = [];
+    let approvedCount = 0;
+    
+    async function loadReviews() {
+      const business = document.getElementById('business-select').value;
+      const container = document.getElementById('reviews-container');
+      
+      container.innerHTML = '<p style="text-align: center;">Laster...</p>';
+      
+      try {
+        const res = await fetch(`/api/reviews/${business}`);
+        const data = await res.json();
+        
+        currentReviews = data.reviews;
+        
+        document.getElementById('total-reviews').textContent = data.total;
+        document.getElementById('unanswered-reviews').textContent = data.unanswered;
+        document.getElementById('generate-all-btn').disabled = data.reviews.length === 0;
+        
+        if (data.reviews.length === 0) {
+          container.innerHTML = '<p style="text-align: center; color: #666;">Ingen ubesvarte reviews 🎉</p>';
+          return;
+        }
+        
+        container.innerHTML = data.reviews.map((review, i) => `
+          <div class="review-card" data-index="${i}">
+            <div class="review-header">
+              <div class="reviewer-info">
+                <h3>${review.reviewer}</h3>
+                <div class="rating">${'⭐'.repeat(getRatingNumber(review.rating))}</div>
+              </div>
+              <small style="color: #999;">${new Date(review.createTime).toLocaleDateString('no')}</small>
+            </div>
+            
+            <div class="review-text">${review.comment}</div>
+            
+            <div class="reply-section">
+              <div class="reply-header">
+                <h4>Ditt svar</h4>
+                <span class="ai-badge">✨ AI</span>
+              </div>
+              
+              <textarea id="reply-${i}" placeholder="Klikk 'Generer svar' for AI-forslag"></textarea>
+              
+              <div class="actions">
+                <button class="btn-generate" onclick="generateOne(${i})">
+                  ✨ Generer svar
+                </button>
+                <button class="btn-approve" onclick="approve(${i})" disabled id="approve-${i}">
+                  ✓ Godkjenn
+                </button>
+                <button class="btn-skip" onclick="skip(${i})">
+                  × Hopp over
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+        
+      } catch (err) {
+        container.innerHTML = `<p style="color: red;">Error: ${err.message}</p>`;
+      }
+    }
+    
+    function getRatingNumber(rating) {
+      const map = { FIVE: 5, FOUR: 4, THREE: 3, TWO: 2, ONE: 1 };
+      return map[rating] || 0;
+    }
+    
+    async function generateOne(index) {
+      const review = currentReviews[index];
+      const textarea = document.getElementById(`reply-${index}`);
+      const btn = event.target;
+      
+      btn.disabled = true;
+      btn.innerHTML = '✨ Genererer<span class="loading"></span>';
+      
+      try {
+        const res = await fetch('/api/generate-reply', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(review)
+        });
+        
+        const data = await res.json();
+        
+        if (data.success) {
+          textarea.value = data.reply;
+          document.getElementById(`approve-${index}`).disabled = false;
+          showToast('✨ Svar generert!');
+        }
+      } catch (err) {
+        showToast('❌ Feil: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '✨ Generer svar';
+      }
+    }
+    
+    async function generateAll() {
+      for (let i = 0; i < currentReviews.length; i++) {
+        await generateOne(i);
+        await new Promise(r => setTimeout(r, 500)); // Rate limit
+      }
+      showToast('🎉 Alle svar generert!');
+    }
+    
+    async function approve(index) {
+      const review = currentReviews[index];
+      const reply = document.getElementById(`reply-${index}`).value;
+      const business = document.getElementById('business-select').value;
+      
+      if (!reply.trim()) {
+        showToast('❌ Kan ikke godkjenne tomt svar', 'error');
+        return;
+      }
+      
+      try {
+        const res = await fetch('/api/approve-reply', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            reviewId: review.id,
+            reply,
+            business
+          })
+        });
+        
+        const data = await res.json();
+        approvedCount = data.queueSize;
+        
+        document.getElementById('queue-count').textContent = approvedCount;
+        document.getElementById('post-all-btn').disabled = approvedCount === 0;
+        
+        // Remove card
+        document.querySelector(`[data-index="${index}"]`).remove();
+        
+        showToast('✓ Lagt til i kø');
+        
+      } catch (err) {
+        showToast('❌ Feil: ' + err.message, 'error');
+      }
+    }
+    
+    function skip(index) {
+      document.querySelector(`[data-index="${index}"]`).remove();
+      showToast('Hoppet over');
+    }
+    
+    async function postAll() {
+      if (!confirm(`Post ${approvedCount} svar til Google Business?`)) return;
+      
+      showToast('🚀 Poster til Google...');
+      
+      // TODO: Actual posting logic
+      setTimeout(() => {
+        showToast('🎉 Alle svar postet!');
+        approvedCount = 0;
+        document.getElementById('queue-count').textContent = '0';
+        document.getElementById('post-all-btn').disabled = true;
+      }, 2000);
+    }
+    
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.style.background = type === 'error' ? '#FF3B30' : '#34C759';
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+    
+    // Auto-load ESSA on start
+    loadReviews();
+  </script>
+</body>
+</html>

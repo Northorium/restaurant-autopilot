@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review Autopilot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-content">
+      <div class="logo">
+        <div class="logo-icon">🦁</div>
+        <h1>Review Autopilot</h1>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <button class="btn-secondary" onclick="window.location.reload()">
+          <span class="material-icons" style="font-size: 18px;">refresh</span>
+          Oppdater
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="stats-bar">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon reviews">
+            <span class="material-icons">rate_review</span>
+          </div>
+          <div class="stat-content">
+            <h3>Totalt</h3>
+            <div class="number" id="total-reviews">-</div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon unanswered">
+            <span class="material-icons">pending</span>
+          </div>
+          <div class="stat-content">
+            <h3>Ubesvarte</h3>
+            <div class="number" id="unanswered-reviews">-</div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon queue">
+            <span class="material-icons">done_all</span>
+          </div>
+          <div class="stat-content">
+            <h3>Godkjent</h3>
+            <div class="number" id="queue-count">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="controls">
+      <select id="business-select">
+        <option value="essa">ESSA</option>
+        <option value="vespa">Vespa & Humla</option>
+        <option value="smash">Smash House</option>
+        <option value="blokk">BLOKK Asker</option>
+      </select>
+      <button class="btn-primary" onclick="loadReviews()">
+        <span class="material-icons" style="font-size: 18px;">download</span>
+        Last inn reviews
+      </button>
+      <button class="btn-secondary" onclick="generateAll()" id="generate-all-btn" disabled>
+        <span class="material-icons" style="font-size: 18px;">auto_awesome</span>
+        Generer alle
+      </button>
+    </div>
+    
+    <div class="reviews-grid" id="reviews-container">
+      <div class="empty-state">
+        <span class="material-icons">inbox</span>
+        <h2>Velg en bedrift</h2>
+        <p>Last inn reviews for å komme i gang</p>
+      </div>
+    </div>
+  </div>
+  
+  <button class="fab" onclick="postAll()" id="fab-post" disabled>
+    <span class="material-icons">send</span>
+    <span class="fab-badge" id="fab-badge" style="display: none;">0</span>
+  </button>
+  
+  <div class="snackbar" id="snackbar"></div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
